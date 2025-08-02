@@ -1,4 +1,4 @@
-# 🏏 Third Umpire Law Detection Using AI
+# 🏏 Third Umpire LBW Detection Using AI
 
 An AI-powered system designed to assist third umpires in cricket by detecting **Leg Before Wicket (LBW)** decisions using computer vision and predictive analytics. This project aims to improve decision accuracy, reduce human error, and eliminate reliance on the "umpire's call".
 
