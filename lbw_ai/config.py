@@ -21,6 +21,10 @@ class AppConfig:
 
     # Classifier
     xgb_model_path: str = "models/lbw_xgb.json"
+    
+    # Trajectory Prediction
+    lstm_model_path: str = "models/lstm_trajectory.pth"
+    use_lstm_trajectory: bool = True  # Use LSTM if available, fallback to polynomial
 
     # Explainer
     use_ai_explainer: bool = True

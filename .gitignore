@@ -29,6 +29,7 @@ env/
 
 # IDE
 .vscode/
+.vs/
 .idea/
 *.swp
 *.swo
@@ -46,7 +47,9 @@ outputs/
 *.mov
 *.mkv
 !samples/*.mp4
+# Model files (optional - users train their own)
 models/*.json
+models/*.pth
 models/*.pt
 !yolov8n.pt
 

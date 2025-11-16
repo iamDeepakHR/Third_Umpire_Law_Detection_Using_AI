@@ -13,7 +13,7 @@ from lbw_ai.config import AppConfig
 from lbw_ai.detector import BallDetector
 from lbw_ai.tracker import SimpleBallTracker
 from lbw_ai.bounce import detect_bounce_point
-from lbw_ai.trajectory import fit_polynomial_trajectory
+from lbw_ai.trajectory import fit_polynomial_trajectory, fit_trajectory
 from lbw_ai.impact import estimate_stumps_region, predict_stump_intersection
 from lbw_ai.classifier import LBWClassifier, LBWFeatures
 from lbw_ai.visualize import draw_overlay, render_overlay_video, create_complete_trajectory_image
@@ -480,9 +480,13 @@ def main():
             if bounce_index is None:
                 bounce_index = max(2, len(track_points) // 3)
 
-            # Trajectory fit and prediction
+            # Trajectory fit and prediction (LSTM if available, else polynomial)
             hist_points = track_points[: bounce_index + 1]
-            traj = fit_polynomial_trajectory(hist_points, degree=2)
+            traj = fit_trajectory(
+                hist_points, 
+                model_path=cfg.lstm_model_path if cfg.use_lstm_trajectory else None,
+                use_lstm=cfg.use_lstm_trajectory
+            )
             future_points = traj.predict(num_future=max(15, len(hist_points)))
 
             # Impact and stumps prediction

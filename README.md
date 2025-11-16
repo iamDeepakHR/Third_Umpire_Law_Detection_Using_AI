@@ -1,211 +1,474 @@
-# 🏏 AI Third Umpire: LBW Detection using Artificial Intelligence
+# 🏏 AI Third Umpire - LBW Detection System
 
-**Tagline**: Automated LBW decisions using YOLOv8, trajectory prediction, and XGBoost—complete with replay visualization and AI explanations.
+An advanced AI-powered third umpire system for cricket that uses computer vision, machine learning, and predictive analytics to detect LBW (Leg Before Wicket) decisions accurately. This system reduces human error and eliminates the need for 'umpire's call' by providing precise, data-driven decisions.
 
-## Overview
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-This project builds an AI-powered Third Umpire system for cricket LBW (Leg Before Wicket) decisions. It detects and tracks the cricket ball from video, identifies bounce, predicts trajectory, analyzes pitching/impact zones, estimates if the ball would hit the stumps, and renders a third-umpire style replay with an OUT/NOT OUT decision and an optional natural-language explanation.
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Installation](#-installation)
+- [Quick Start](#-quick-start)
+- [Usage](#-usage)
+- [Training LSTM Model](#-training-lstm-model)
+- [Understanding Model Files](#-understanding-model-files)
+- [Project Structure](#-project-structure)
+- [How It Works](#-how-it-works)
+- [Technologies Used](#-technologies-used)
+- [Configuration](#-configuration)
+- [Testing](#-testing)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Author](#-author)
 
 ## ✨ Features
 
-### Core Functionality
-- **Ball Detection & Tracking**: YOLOv8 + centroid tracker for accurate ball detection
-- **Bounce Point Detection**: Velocity inflection analysis to identify bounce points
-- **Trajectory Prediction**: Polynomial regression for ball path prediction
-- **Pitching & Impact Zone Analysis**: Automated zone detection and analysis
-- **Stump Hit Prediction**: Estimates if the ball would hit the stumps
-- **LBW Decision**: XGBoost model with rule-based fallback
-- **Visualization Overlays**: Professional video overlays with trajectory paths
-- **AI Explanations**: Optional AI-generated explanations (Gemini API)
+- **🎯 Accurate Ball Detection**: Uses YOLOv8 for real-time ball detection and tracking
+- **📊 Advanced Trajectory Analysis**: LSTM-based trajectory prediction with polynomial fallback
+- **🧠 ML-Based Classification**: XGBoost classifier for LBW decision making (with automatic rule-based fallback)
+- **🎬 3D Visualization**: Interactive 3D trajectory plots using Plotly
+- **📄 PDF Reports**: Automated generation of detailed technical reports
+- **📈 Analytics Dashboard**: Comprehensive analytics and review history
+- **🤖 AI-Powered Explanations**: Gemini AI integration for detailed decision explanations
+- **🎥 Video Replay**: Generate annotated replay videos with trajectory overlays
+- **⚡ Real-time Analysis**: Fast processing with configurable parameters
 
-### Enhanced Features
-- **🎨 Dark Theme UI**: Professional Third Umpire Room aesthetics
-- **📊 3D Trajectory Visualization**: Interactive Plotly-based 3D ball path visualization
-- **📈 Analytics Dashboard**: Real-time statistics and review history
-- **🎬 Video Timeline Scrubber**: Frame-by-frame navigation with key event markers
-- **📄 PDF Report Generation**: Comprehensive analysis reports
-- **💬 AI Commentary**: Analyst and Commentator modes
-- **💾 Session Storage**: Persistent review history and analytics
-
-## 🚀 Quick Start
+## 🚀 Installation
 
 ### Prerequisites
+
 - Python 3.8 or higher
-- pip package manager
+- pip (Python package manager)
+- Git (optional, for cloning the repository)
 
-### Installation
+### Step 1: Clone the Repository
 
-1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd "Third Umpire for LBW Detection using AI"
+git clone https://github.com/iamDeepakHR/Third_Umpire_LBW_Detection_Using_AI.git
+cd Third_Umpire_LBW_Detection_Using_AI
 ```
 
-2. **Create and activate a virtual environment (recommended)**
-```bash
-# Windows PowerShell
-python -m venv .venv
-.venv\Scripts\activate
+### Step 2: Install Dependencies
 
-# Linux/Mac
-python -m venv .venv
-source .venv/bin/activate
+**Option A: Using setup script (Recommended)**
+
+```bash
+python setup.py
 ```
 
-3. **Install dependencies**
+**Option B: Manual installation**
+
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Download YOLOv8 model (optional)**
-   - The app will automatically download `yolov8n.pt` if not present
-   - Or place a custom YOLOv8 weights file in the project root
+### Step 3: Verify Installation
 
-5. **Run the application**
+The YOLOv8 weights file (`yolov8n.pt`) should already be included. If not, it will be automatically downloaded on first run.
+
+### Step 4: (Optional) Train LSTM Model
+
+The system works without trained models (uses fallbacks), but for better accuracy:
+
+```bash
+python train_lstm_trajectory.py --synthetic --num-synthetic 1000 --epochs 50
+```
+
+See [Training LSTM Model](#-training-lstm-model) section for details.
+
+### Step 5: (Optional) Get Gemini API Key
+
+For AI-powered explanations, get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey) and configure it in the application sidebar.
+
+## ⚡ Quick Start
+
+1. **Start the application:**
+   ```bash
+   streamlit run app.py
+   ```
+
+2. **Upload a video or select from samples:**
+   - Click "Upload a cricket video" or choose from demo videos
+   - Click "🚀 Run LBW Analysis"
+
+3. **View results:**
+   - See the decision (OUT/NOT OUT) with confidence
+   - Explore 3D visualizations and detailed analysis
+   - Download PDF reports
+
+**That's it!** The system works out of the box with automatic fallback methods. No model files needed!
+
+## 💻 Usage
+
+### Running the Application
+
 ```bash
 streamlit run app.py
 ```
 
-6. **Open your browser**
-   - The app will automatically open in your default browser
-   - Or navigate to the URL shown in the terminal (usually `http://localhost:8501`)
+The application will open in your browser at `http://localhost:8501`
 
-## 📖 Usage
+### Application Features
 
-### Basic Workflow
+1. **Video Analysis Tab:**
+   - Upload cricket videos (MP4, MOV, AVI, MKV)
+   - Select from sample videos
+   - View real-time analysis with trajectory overlays
+   - Generate PDF reports and replay videos
 
-1. **Upload a Video**
-   - Click "Upload a cricket video" and select a video file (mp4, mov, avi, mkv)
-   - Or select a demo video from the samples folder
+2. **Analytics Dashboard:**
+   - View statistics on all reviews
+   - See decision distributions
+   - Track confidence scores over time
 
-2. **Configure Settings** (optional)
-   - Adjust YOLO weights path if needed
-   - Set confidence and IoU thresholds
-   - Limit max frames for faster processing
-   - Enter Gemini API key for AI explanations (optional)
+3. **History Tab:**
+   - Review past analyses
+   - Access detailed information for each review
 
-3. **Run Analysis**
-   - Click "🚀 Run LBW Analysis"
-   - Wait for the analysis to complete (progress bar will show status)
+### Command Line Usage
 
-4. **View Results**
-   - **Decision**: OUT or NOT OUT with confidence score
-   - **Video Overlay**: Trajectory visualization on video frames
-   - **3D Trajectory**: Interactive 3D plot of ball path
-   - **Explanations**: Technical and simple explanations
-   - **Analytics**: Statistics and review history
+```python
+from lbw_ai.detector import BallDetector
+from lbw_ai.tracker import SimpleBallTracker
+from lbw_ai.trajectory import fit_trajectory
+from lbw_ai.classifier import LBWClassifier
 
-### Advanced Features
+# Initialize components
+detector = BallDetector(weights_path="yolov8n.pt")
+tracker = SimpleBallTracker()
 
-#### Video Timeline Navigation
-- Use the frame slider to scrub through video frames
-- View trajectory overlay at any point in the video
-- Key events (bounce, impact) are marked on the timeline
+# Classifier works automatically - no model file needed!
+# Uses rule-based fallback if models/lbw_xgb.json doesn't exist
+classifier = LBWClassifier("models/lbw_xgb.json")
 
-#### Analytics Dashboard
-- View statistics: total reviews, OUT/NOT OUT percentage, average confidence
-- Interactive charts: decision distribution, confidence histogram
-- Review history table with all key metrics
+# Process video and get trajectory
+# Uses LSTM if models/lstm_trajectory.pth exists, else polynomial
+trajectory = fit_trajectory(track_points, model_path="models/lstm_trajectory.pth")
+future_points = trajectory.predict(num_future=15)
+```
 
-#### Generate Reports
-- **PDF Report**: Comprehensive multi-page analysis document
-- **JSON Report**: Machine-readable analysis data
-- **Video Replay**: Download annotated video with trajectory overlay
+## 🎓 Training LSTM Model
 
-#### AI Commentary
-- **Analyst Mode**: Technical, detailed explanations
-- **Commentator Mode**: Engaging, natural language commentary
-- Requires Gemini API key (optional)
+The LSTM model improves trajectory prediction accuracy. You can train it with synthetic data (no videos needed) or extract trajectories from your videos.
+
+### Quick Start: Train with Synthetic Data (No Videos Needed!)
+
+**Easiest method - no data required:**
+
+```bash
+python train_lstm_trajectory.py --synthetic --num-synthetic 1000 --epochs 50
+```
+
+**What this does:**
+- Generates 1000 synthetic ball trajectories automatically
+- Trains LSTM model for 50 epochs (~5-10 minutes on CPU)
+- Saves model to `models/lstm_trajectory.pth`
+- The app will automatically use it!
+
+### Training Options
+
+**Quick Test (2-3 minutes):**
+```bash
+python train_lstm_trajectory.py --synthetic --num-synthetic 500 --epochs 20
+```
+
+**Better Accuracy (10-15 minutes):**
+```bash
+python train_lstm_trajectory.py --synthetic --num-synthetic 2000 --epochs 100
+```
+
+**Maximum Accuracy (30-60 minutes):**
+```bash
+python train_lstm_trajectory.py --synthetic --num-synthetic 5000 --epochs 200 --hidden-size 128
+```
+
+### Training with Real Video Data
+
+If you want to train on real trajectories from your videos:
+
+**Step 1: Extract trajectories from videos**
+```bash
+python extract_trajectories_from_videos.py samples/ --output trajectories.json
+```
+
+**Step 2: Train on extracted data**
+```bash
+python train_lstm_trajectory.py --data-file trajectories.json --epochs 100
+```
+
+### Training Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `--synthetic` | Generate synthetic training data | - |
+| `--num-synthetic` | Number of synthetic trajectories | 1000 |
+| `--data-file` | Path to trajectory JSON file | - |
+| `--epochs` | Number of training epochs | 50 |
+| `--batch-size` | Batch size for training | 32 |
+| `--learning-rate` | Learning rate | 0.001 |
+| `--hidden-size` | LSTM hidden layer size | 64 |
+| `--num-layers` | Number of LSTM layers | 2 |
+| `--sequence-length` | Input sequence length | 10 |
+| `--output` | Output model path | models/lstm_trajectory.pth |
+| `--device` | Device (cpu/cuda/auto) | auto |
+
+### Understanding Training Data
+
+**Important:** The LSTM trains on **trajectory coordinates** (x, y points), NOT directly on videos or images.
+
+- **Synthetic data**: Automatically generated realistic trajectories
+- **Real data**: Extract from videos using `extract_trajectories_from_videos.py`
+- **Format**: JSON file with list of trajectories, each trajectory is list of [x, y] coordinates
+
+**Example trajectory data format:**
+```json
+[
+  [[100, 200], [105, 210], [110, 220], [115, 230], ...],
+  [[150, 180], [155, 190], [160, 200], [165, 210], ...]
+]
+```
+
+## 📊 Understanding Model Files
+
+### ⚠️ Important: Model Files Are Optional!
+
+The system **works perfectly without any model files** using automatic fallbacks. Model files only improve accuracy but are **not required**.
+
+### 1. LSTM Trajectory Model (`models/lstm_trajectory.pth`)
+
+**Status:** Optional - Train using `train_lstm_trajectory.py`
+
+**What it does:** Improves trajectory prediction accuracy for complex ball paths
+
+**Fallback:** Polynomial curve fitting (always available)
+
+**How to get it:**
+```bash
+python train_lstm_trajectory.py --synthetic --num-synthetic 1000 --epochs 50
+```
+
+**Usage:** System automatically uses LSTM if file exists, falls back to polynomial if not.
+
+### 2. XGBoost Classifier (`models/lbw_xgb.json`)
+
+**Status:** Optional - Not included in repository
+
+**What it does:** Improves LBW decision classification accuracy
+
+**Fallback:** Rule-based classifier (automatic - no setup needed!)
+
+**How it works:**
+```python
+# This code works even if models/lbw_xgb.json doesn't exist!
+classifier = LBWClassifier("models/lbw_xgb.json")
+
+# System automatically checks:
+# - If file exists → Uses XGBoost model
+# - If file doesn't exist → Uses rule-based fallback automatically
+```
+
+**Rule-based fallback scoring:**
+- Pitched in-line: +0.4 points
+- Impact in-line: +0.6 points
+- Would hit stumps: +0.8 points
+- Distance penalty: -0.3 points (based on distance)
+- Decision: OUT if score ≥ 0.5, otherwise NOT OUT
+
+**You don't need to do anything!** The system works automatically.
+
+### Summary
+
+| Model File | Required? | Fallback | How to Get |
+|------------|-----------|----------|------------|
+| `lstm_trajectory.pth` | ❌ No | Polynomial fitting | Train with `train_lstm_trajectory.py` |
+| `lbw_xgb.json` | ❌ No | Rule-based heuristics | Train on your dataset (optional) |
+
+**Bottom line:** The system works out of the box! Model files are optional enhancements.
 
 ## 📁 Project Structure
 
 ```
-.
-├── app.py                      # Main Streamlit application
-├── setup.py                    # Setup script for dependencies
-├── test_integration.py         # Integration tests
-├── requirements.txt            # Python dependencies
-├── .gitignore                  # Git ignore rules
-├── README.md                   # This file
-├── yolov8n.pt                  # YOLOv8 model weights (auto-downloaded)
-├── samples/                    # Sample video files
-│   └── *.mp4
-├── lbw_ai/                     # Core LBW detection module
+Third_Umpire_LBW_Detection_Using_AI/
+│
+├── app.py                          # Main Streamlit application
+├── setup.py                        # Setup script for installation
+├── requirements.txt                # Python dependencies
+├── test_integration.py             # Integration tests
+├── train_lstm_trajectory.py        # LSTM model training script
+├── extract_trajectories_from_videos.py  # Extract trajectories from videos
+├── yolov8n.pt                      # YOLOv8 model weights
+├── README.md                       # This file
+│
+├── lbw_ai/                         # Core AI module
 │   ├── __init__.py
-│   ├── config.py              # Configuration settings
-│   ├── detector.py            # Ball detection (YOLOv8)
-│   ├── tracker.py             # Ball tracking
-│   ├── bounce.py              # Bounce detection
-│   ├── trajectory.py          # Trajectory prediction
-│   ├── impact.py              # Impact zone analysis
-│   ├── classifier.py          # LBW decision classifier
-│   ├── visualize.py           # 2D visualization
-│   ├── visualize_3d.py        # 3D visualization
-│   ├── explainer.py           # AI explanation generation
-│   ├── analytics.py           # Analytics dashboard
-│   └── report_generator.py    # PDF report generation
-├── uploads/                    # User uploaded videos (auto-created)
-├── outputs/                    # Generated outputs (auto-created)
-│   ├── *_overlay.mp4          # Annotated videos
-│   └── *_report.pdf           # PDF reports
-└── models/                     # ML models (auto-created)
-    └── lbw_xgb.json           # XGBoost model (optional)
+│   ├── config.py                  # Configuration settings
+│   ├── detector.py                # Ball detection using YOLO
+│   ├── tracker.py                 # Ball tracking algorithm
+│   ├── bounce.py                  # Bounce point detection
+│   ├── trajectory.py              # Trajectory prediction (LSTM + Polynomial)
+│   ├── impact.py                  # Impact and stumps prediction
+│   ├── classifier.py              # LBW decision classifier (XGBoost + Rule-based)
+│   ├── visualize.py               # 2D visualization
+│   ├── visualize_3d.py            # 3D trajectory plots
+│   ├── explainer.py               # AI-powered explanations
+│   ├── analytics.py               # Analytics dashboard
+│   └── report_generator.py        # PDF report generation
+│
+├── samples/                        # Sample cricket videos
+│   ├── lbw.mp4
+│   ├── lbw1.mp4
+│   └── ...
+│
+├── models/                         # ML model files (optional)
+│   ├── README.md                  # Model documentation
+│   ├── lbw_xgb.json               # XGBoost classifier (optional)
+│   └── lstm_trajectory.pth        # LSTM trajectory model (optional)
+│
+├── outputs/                        # Generated outputs
+│   ├── *_report.pdf
+│   └── *_overlay.mp4
+│
+└── analytics/                      # Analytics data
+    └── reviews.json
 ```
+
+## 🔧 How It Works
+
+### 1. Ball Detection
+- Uses YOLOv8 object detection model to identify the cricket ball in each frame
+- Filters detections based on confidence and IoU thresholds
+
+### 2. Ball Tracking
+- Tracks the ball across frames using a simple tracking algorithm
+- Maintains trajectory history for analysis
+
+### 3. Bounce Detection
+- Analyzes trajectory changes to detect bounce points
+- Identifies where the ball hits the pitch
+
+### 4. Trajectory Prediction
+- **Primary**: LSTM-based sequence-to-sequence prediction (if model available)
+  - Learns complex trajectory patterns from training data
+  - Better handles non-linear movements and bounce effects
+  - Improved accuracy for complex trajectories
+- **Fallback**: Polynomial curve fitting
+  - Fits polynomial curves to the ball's trajectory
+  - Predicts future ball path using mathematical modeling
+  - Always available as backup method
+
+### 5. Impact Analysis
+- Estimates stumps region in the frame
+- Predicts whether the ball would hit the stumps
+- Calculates distance to stumps if it misses
+
+### 6. LBW Classification
+- Extracts features: pitched zone, impact in-line, would hit stumps, distance
+- **Primary**: Uses XGBoost classifier (if model file exists)
+- **Fallback**: Rule-based heuristics (automatic if model file missing)
+  - Scoring system based on key LBW factors
+  - Provides confidence score for the decision
+- Returns decision: OUT or NOT OUT with confidence percentage
+
+### 7. Visualization & Reporting
+- Generates 2D and 3D trajectory visualizations
+- Creates annotated video replays
+- Generates comprehensive PDF reports
+- Provides AI-powered explanations
+
+## 🛠️ Technologies Used
+
+- **Computer Vision**: OpenCV, YOLOv8 (Ultralytics)
+- **Machine Learning**: XGBoost, scikit-learn, PyTorch
+- **Deep Learning**: LSTM for trajectory prediction
+- **Web Framework**: Streamlit
+- **Visualization**: Plotly, Matplotlib, Pillow
+- **AI Explanations**: Google Generative AI (Gemini)
+- **Data Processing**: NumPy, Pandas, SciPy
+- **Report Generation**: ReportLab (via report_generator)
 
 ## ⚙️ Configuration
 
-### Environment Variables
-- `GEMINI_API_KEY`: Optional Gemini API key for AI explanations (can also be entered in UI)
+Edit `lbw_ai/config.py` or use the Streamlit sidebar to configure:
 
-### Model Paths
-- YOLOv8 weights: Default `yolov8n.pt` (auto-downloaded)
-- XGBoost model: Default `models/lbw_xgb.json` (rule-based fallback if not found)
+- **YOLO Weights Path**: Path to YOLOv8 model weights
+- **Confidence Threshold**: Minimum confidence for ball detection (default: 0.25)
+- **IoU Threshold**: Intersection over Union threshold (default: 0.45)
+- **Max Frames**: Limit number of frames to process (None for all)
+- **LSTM Model Path**: Path to LSTM trajectory model (default: models/lstm_trajectory.pth)
+- **Use LSTM**: Enable/disable LSTM trajectory prediction (default: True)
+- **XGBoost Model**: Path to trained classifier model (default: models/lbw_xgb.json)
+- **Stumps Position**: Configure stumps region in frame
 
-### Settings in UI
-- **Confidence Threshold**: Detection confidence (default: 0.25)
-- **IoU Threshold**: Intersection over Union for NMS (default: 0.45)
-- **Max Frames**: Limit frames for faster processing (0 = all frames)
+## 🧪 Testing
 
-## 🔧 Development
+Run the integration tests:
 
-### Running Tests
 ```bash
 python test_integration.py
 ```
 
-### Setup Script
-```bash
-python setup.py
-```
-This will install dependencies and create necessary directories.
-
-## 📝 Notes
-
-- **Accuracy**: Real-world accuracy depends on video quality, camera angle, calibration, and model training
-- **Model Training**: For best results, fine-tune YOLOv8 on your cricket dataset and train the XGBoost model with labeled OUT/NOT OUT samples
-- **API Keys**: Gemini API key is optional. The app works without it but won't provide AI-generated explanations
-- **Video Format**: Supports mp4, mov, avi, mkv formats
-- **Performance**: Processing time depends on video length and resolution
+This will verify:
+- All required modules can be imported
+- Basic explanation generation works
+- Trajectory visualization functions correctly
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please follow these steps:
 
-## 📄 License
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-MIT License - see LICENSE file for details
+### Development Guidelines
+
+- Follow PEP 8 style guidelines
+- Add docstrings to all functions and classes
+- Write tests for new features
+- Update documentation as needed
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author
+
+**Deepak HR**
+
+- GitHub: [@iamDeepakHR](https://github.com/iamDeepakHR)
+- Repository: [Third_Umpire_LBW_Detection_Using_AI](https://github.com/iamDeepakHR/Third_Umpire_LBW_Detection_Using_AI)
 
 ## 🙏 Acknowledgments
 
-- YOLOv8 by Ultralytics
+- YOLOv8 by Ultralytics for object detection
 - Streamlit for the web framework
-- Plotly for 3D visualizations
-- Google Gemini for AI explanations
+- Google Generative AI for explanation features
+- The cricket community for inspiration
 
-## 📧 Support
+## 📞 Support
 
-For issues, questions, or contributions, please open an issue on the repository.
+If you encounter any issues or have questions:
+
+1. Check the [Issues](https://github.com/iamDeepakHR/Third_Umpire_LBW_Detection_Using_AI/issues) page
+2. Create a new issue with detailed information
+3. Include error messages and steps to reproduce
+
+## 🔮 Future Enhancements
+
+- [ ] Multi-camera support for better accuracy
+- [ ] Real-time video stream processing
+- [ ] Integration with broadcast systems
+- [ ] Mobile app version
+- [ ] Advanced physics modeling
+- [ ] Player pose estimation
+- [ ] Automated pitch calibration
 
 ---
 
-**Enjoy your AI Third Umpire system! 🏏**
+**Note**: This is an AI-based system designed to assist in LBW decisions. For official cricket matches, always follow ICC regulations and use certified systems.
+
+Made with ❤️ for cricket enthusiasts
