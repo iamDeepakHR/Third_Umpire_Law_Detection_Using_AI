@@ -290,7 +290,7 @@ classifier = LBWClassifier("models/lbw_xgb.json")
 ## 📁 Project Structure
 
 ```
-Third_Umpire_LBW_Detection_Using_AI/
+AI-Third-Umpire-LBW-Detection/
 │
 ├── app.py                          # Main Streamlit application
 ├── setup.py                        # Setup script for installation
@@ -440,7 +440,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Deepak HR**
 
 - GitHub: [@iamDeepakHR](https://github.com/iamDeepakHR)
-- Repository: [Third_Umpire_LBW_Detection_Using_AI](https://github.com/iamDeepakHR/Third_Umpire_LBW_Detection_Using_AI)
+- Repository: [Third_Umpire_LBW_Detection_Using_AI](https://github.com/iamDeepakHR/AI-Third-Umpire-LBW-Detection)
 
 ## 🙏 Acknowledgments
 
@@ -453,7 +453,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/iamDeepakHR/Third_Umpire_LBW_Detection_Using_AI/issues) page
+1. Check the [Issues](https://github.com/iamDeepakHR/AI-Third-Umpire-LBW-Detection/issues) page
 2. Create a new issue with detailed information
 3. Include error messages and steps to reproduce
 
